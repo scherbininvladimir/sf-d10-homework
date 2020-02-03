@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <form method="get">
+        <h3>{{ selected_filter_options }}</h3>
+        <h2>Фильтр</h2>
+        <fieldset>
+            <legend>Производитель</legend>
+            {% for manufacturer in filter_options.manufacturers %}
+                <input type="checkbox" name="manufacturer" value="{{manufacturer}}"
+                    {% if manufacturer in selected_filter_options.manufacturers %}
+                        checked
+                    {% endif %}
+                >{{manufacturer}}<br>
+            {% endfor %}
+        </fieldset>
+        <fieldset>
+            <legend>Модель</legend>
+            {% for model in filter_options.models %}
+                <input type="checkbox" name="model" value="{{model}}"
+                    {% if model in selected_filter_options.models %}
+                        checked
+                    {% endif %}
+                >{{model}}<br>
+            {% endfor %}
+        </fieldset>
+        <fieldset>
+            <legend>Тип коробки передач</legend>
+            {% for transmission in filter_options.transmissions %}
+                {% for id, transmission_name in transmission.items %}
+                    <input type="checkbox" name="transmission" value="{{ id }}"
+                        {% if id in selected_filter_options.transmissions %}
+                            checked
+                        {% endif %}
+                    >{{transmission_name}}<br>
+                {% endfor %}
+            {% endfor %}
+        </fieldset>
+        <fieldset>
+            <legend>Цвет</legend>
+            {% for color in filter_options.colors %}
+                    <input type="checkbox" name="color" value="{{color}}"
+                        {% if color in selected_filter_options.colors %}
+                            checked
+                        {% endif %}                    
+                    >{{color}}<br>
+            {% endfor %}
+        </fieldset>
+        <br>
+        <input type="submit" value="Применить фильтр">
+    </form>
+
+    <table>
+        <tr>
+            <th>Марка</th>
+            <th>Модель</th>
+            <th>Год выпуска</th>
+            <th>Тип коробки передач</th>
+            <th>Цвет</th>
+            <th></th>
+        </tr>
+        {% for car in car_list %}
+        <tr>
+            <td>
+                {{ car.manufacturer }}
+            </td>
+            <td>
+                {{ car.model }}
+            </td>
+            <td>
+                {{ car.year }}
+            </td>
+            <td>
+                {{car.get_transmission_display}}
+            </td>
+            <td>
+              {{ car.color }}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
