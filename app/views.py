@@ -15,6 +15,15 @@ class CarsList(ListView):
         selected_filter_options['models'] = self.request.GET.getlist('model')
         selected_filter_options['transmissions'] = self.request.GET.getlist('transmission')
         selected_filter_options['colors'] = self.request.GET.getlist('color')
+        try:
+            selected_filter_options['year_after'] = int(self.request.GET['year_after'])
+        except ValueError:
+            pass
+        try:
+            selected_filter_options['year_before'] = int(self.request.GET['year_before'])
+        except ValueError:
+            pass
+        print(selected_filter_options)
         context['selected_filter_options'] = selected_filter_options
         filter_options = {'manufacturers': [], 'models': [], 'transmissions': [], 'colors': []}
         for car in Car.objects.all():

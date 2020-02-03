@@ -47,79 +47,69 @@
             <div class="col-lg-3 bg-light">
                 <form method="get">
                     <div class="form-group">
-
+                        <legend></legend>
                     </div>
 
-                    <fieldset>
-                        <legend>Фильтр</legend>
-                        <fieldset>
-                            <legend>Производитель</legend>
-                            {% for manufacturer in filter_options.manufacturers %}
-                                <input type="checkbox" name="manufacturer" value="{{manufacturer}}"
-                                    {% if manufacturer in selected_filter_options.manufacturers %}
+                    <h2>Фильтр</h2>
+                    <fieldset class="form-group">
+                        <legend>Производитель</legend>
+                        {% for manufacturer in filter_options.manufacturers %}
+                            <input type="checkbox" name="manufacturer" value="{{manufacturer}}"
+                                {% if manufacturer in selected_filter_options.manufacturers %}
+                                    checked
+                                {% endif %}
+                            > {{manufacturer}}<br>
+                        {% endfor %}
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <legend>Модель</legend>
+                        {% for model in filter_options.models %}
+                            <input type="checkbox" name="model" value="{{model}}"
+                                {% if model in selected_filter_options.models %}
+                                    checked
+                                {% endif %}
+                            > {{model}}<br>
+                        {% endfor %}
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <legend>Тип коробки передач</legend>
+                        {% for transmission in filter_options.transmissions %}
+                            {% for id, transmission_name in transmission.items %}
+                                <input type="checkbox" name="transmission" value="{{ id }}"
+                                    {% if id in selected_filter_options.transmissions %}
                                         checked
                                     {% endif %}
-                                >{{manufacturer}}<br>
+                                > {{transmission_name}}<br>
                             {% endfor %}
-                        </fieldset>
-                        <fieldset>
-                            <legend>Модель</legend>
-                            {% for model in filter_options.models %}
-                                <input type="checkbox" name="model" value="{{model}}"
-                                    {% if model in selected_filter_options.models %}
+                        {% endfor %}
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <legend>Цвет</legend>
+                        {% for color in filter_options.colors %}
+                                <input type="checkbox" name="color" value="{{color}}"
+                                    {% if color in selected_filter_options.colors %}
                                         checked
-                                    {% endif %}
-                                >{{model}}<br>
-                            {% endfor %}
-                        </fieldset>
-                        <fieldset>
-                            <legend>Тип коробки передач</legend>
-                            {% for transmission in filter_options.transmissions %}
-                                {% for id, transmission_name in transmission.items %}
-                                    <input type="checkbox" name="transmission" value="{{ id }}"
-                                        {% if id in selected_filter_options.transmissions %}
-                                            checked
-                                        {% endif %}
-                                    >{{transmission_name}}<br>
-                                {% endfor %}
-                            {% endfor %}
-                        </fieldset>
-                        <fieldset>
-                            <legend>Цвет</legend>
-                            {% for color in filter_options.colors %}
-                                    <input type="checkbox" name="color" value="{{color}}"
-                                        {% if color in selected_filter_options.colors %}
-                                            checked
-                                        {% endif %}                    
-                                    >{{color}}<br>
-                            {% endfor %}
-                        </fieldset>
-                        <br>
-                        <input type="submit" value="Применить фильтр">
-                </fieldset>
+                                    {% endif %}                    
+                                > {{color}}<br>
+                        {% endfor %}
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <legend>Год выпуска</legend>
+                        <input type="text" class="form-control" placeholder="С" name="year_after"
+                            {% if selected_filter_options.year_after %}
+                                value="{{selected_filter_options.year_after}}"
+                            {% endif %}
+                        >
+                        <input type="text" class="form-control" placeholder="По" name="year_before"
+                            {% if selected_filter_options.year_before %}
+                                value="{{selected_filter_options.year_before}}"
+                            {% endif %}            
+                        >
+                    </fieldset>
+                    <br>
+                    <input type="submit" class="btn btn-primary" value="Применить фильтр">
                 </form>
-
-
-                    <div class="form-group">
-                      <label for="exampleInputEmail1">Email address</label>
-                      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-                      <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-                    </div>
-                    <div class="form-group">
-                      <label for="exampleInputPassword1">Password</label>
-                      <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-                    </div>
-                    <div class="form-group form-check">
-                      <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                      <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                  </form>
-
-
-
             </div>
-            
         </div>
     </div>
     
