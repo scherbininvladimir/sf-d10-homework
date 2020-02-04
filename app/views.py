@@ -16,14 +16,13 @@ class CarsList(ListView):
         selected_filter_options['transmissions'] = self.request.GET.getlist('transmission')
         selected_filter_options['colors'] = self.request.GET.getlist('color')
         try:
-            selected_filter_options['year_after'] = int(self.request.GET['year_after'])
+            selected_filter_options['year_after'] = int(self.request.GET.get('year_after', ''))
         except ValueError:
             pass
         try:
-            selected_filter_options['year_before'] = int(self.request.GET['year_before'])
+            selected_filter_options['year_before'] = int(self.request.GET.get('year_before', ''))
         except ValueError:
             pass
-        print(selected_filter_options)
         context['selected_filter_options'] = selected_filter_options
         filter_options = {'manufacturers': [], 'models': [], 'transmissions': [], 'colors': []}
         for car in Car.objects.all():
@@ -47,6 +46,8 @@ class CarsList(ListView):
         q_objects_models = Q()
         q_objects_transmissions = Q()
         q_objects_colors = Q()
+        q_objects_year_after = Q()
+        q_objects_year_before = Q()
         if len(manufacturers) or len(colors) or len(models) or len(transmissions):
             for manufacturer in manufacturers:
                 q_objects_manufacturers |= Q(manufacturer=manufacturer)
@@ -56,4 +57,22 @@ class CarsList(ListView):
                 q_objects_colors |= Q(color=color)
             for transmission in transmissions:
                 q_objects_transmissions |= Q(transmission=int(transmission))
-        return Car.objects.all().filter((q_objects_manufacturers) & (q_objects_models) & (q_objects_transmissions) & (q_objects_colors))
+        if self.request.GET.get('year_after'):
+            try:
+                q_objects_year_after = Q(year__gte=int(self.request.GET.get('year_after')))
+            except ValueError:
+                pass
+        if self.request.GET.get('year_before'):
+            try:
+                q_objects_year_before = Q(year__lte=int(self.request.GET.get('year_before')))
+            except ValueError:
+                pass
+
+        return Car.objects.all().filter(
+            (q_objects_manufacturers) & 
+            (q_objects_models) & 
+            (q_objects_transmissions) & 
+            (q_objects_colors) & 
+            (q_objects_year_after) & 
+            (q_objects_year_before)
+        )
